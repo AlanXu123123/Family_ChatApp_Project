@@ -1,0 +1,13 @@
+{
+  "projects": {},
+  "targets": {
+    "mychat-1a8ad": {
+      "hosting": {
+        "familychat-private": [
+          "familychat-private"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
