@@ -1,14 +1,11 @@
-import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import '../models/user_profile.dart';
 import '../services/auth_service.dart';
 import '../services/chat_service.dart';
 import '../services/badge_service.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/external_link_overlay.dart';
 import 'chat_screen.dart';
-
-@JS('_openUrl')
-external void _jsOpenUrl(JSString url);
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({super.key});
@@ -206,41 +203,55 @@ class _ContactsScreenState extends State<ContactsScreen> {
   }
 
   Widget _buildVocabButton(BuildContext context, bool isDark) {
-    return GlassContainer(
+    final card = GlassContainer(
       opacity: isDark ? 0.08 : 0.55,
       borderRadius: BorderRadius.circular(16),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        leading: Container(
-          width: 46, height: 46,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            gradient: const LinearGradient(
-              colors: [Color(0xFFFF9500), Color(0xFFFF6B00)],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 46, height: 46,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFF9500), Color(0xFFFF6B00)],
+                ),
+              ),
+              child: const Icon(Icons.menu_book_rounded, color: Colors.white, size: 24),
             ),
-          ),
-          child: const Icon(Icons.menu_book_rounded, color: Colors.white, size: 24),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '英语学习',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 16,
+                      color: isDark ? Colors.white : const Color(0xFF1C1C1E),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '背单词测验 · 语法训练 · AI造句',
+                    style: TextStyle(fontSize: 12, color: isDark ? Colors.white30 : Colors.black38),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios, size: 14,
+                color: isDark ? Colors.white24 : Colors.black26),
+          ],
         ),
-        title: Text(
-          '英语学习',
-          style: TextStyle(
-            fontWeight: FontWeight.w600, fontSize: 16,
-            color: isDark ? Colors.white : const Color(0xFF1C1C1E),
-          ),
-        ),
-        subtitle: Text(
-          '背单词测验 · 语法训练 · AI造句',
-          style: TextStyle(fontSize: 12, color: isDark ? Colors.white30 : Colors.black38),
-        ),
-        trailing: Icon(Icons.arrow_forward_ios, size: 14,
-            color: isDark ? Colors.white24 : Colors.black26),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        onTap: () {
-          try {
-            _jsOpenUrl('https://alanxu123123.github.io/Justin-Vocabulary-Learning/vocabulary-quiz/'.toJS);
-          } catch (_) {}
-        },
       ),
+    );
+
+    return ExternalLinkOverlay(
+      url: 'https://alanxu123123.github.io/Justin-Vocabulary-Learning/vocabulary-quiz/',
+      borderRadius: BorderRadius.circular(16),
+      child: card,
     );
   }
 
